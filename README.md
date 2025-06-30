@@ -1,6 +1,6 @@
 # Inverted-Pendulum-on-a-4-wheel-Cart-
 
-# Inverted Pendulum on a 4-Wheel Cart (Self-Balancing Robot)
+# Inverted Pendulum on a 4-Wheel Cart (Self-Balancing )
 
 Welcome to the GitHub repository of my self-balancing robot project! This robot uses a 4-wheel cart to balance an inverted pendulum (vertical rod) in real-time using sensor feedback and PID control, implemented on an ESP8266 microcontroller.
 
