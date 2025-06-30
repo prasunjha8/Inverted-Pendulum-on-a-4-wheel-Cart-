@@ -20,7 +20,7 @@ In our setup, the cart moves forward or backward based on the direction of tilt,
 
 ---
 
-## 🔧 Components Used
+## Components Used
 
 | Component             | Description                                    |
 |----------------------|------------------------------------------------|
