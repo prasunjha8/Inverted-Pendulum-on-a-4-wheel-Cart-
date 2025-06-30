@@ -1,46 +1,58 @@
-# Inverted-Pendulum-on-a-4-wheel-Cart-
+# MATLAB Simulation of an Inverted Pendulum
 
-# Inverted Pendulum on a 4-Wheel Cart (Self-Balancing )
+This project demonstrates a **MATLAB Simulink-based simulation of an inverted pendulum system** — a classic control systems problem. The system comprises a **cart-pendulum setup** where a force is applied to the cart, and the behavior of the pendulum is observed through simulation.
 
-Welcome to the GitHub repository of my self-balancing robot project! This robot uses a 4-wheel cart to balance an inverted pendulum (vertical rod) in real-time using sensor feedback and PID control, implemented on an ESP8266 microcontroller.
+## System Overview
+
+- **Input:**
+
+  - A single input: `Force` applied to the cart.
+
+- **Outputs:**
+
+  - `x`: The **horizontal position** of the cart.
+  - `θ`: The **angle** of the pendulum from the vertical.
+
+## ⚙️ Simulation Details
+
+The system internally uses **four calculated parameters/functions** to derive the pendulum’s motion:
+
+1. `ẍ` – Acceleration of the cart.
+2. `θ̈` – Angular acceleration of the pendulum.
+3. `N` – The **net force acting on the pendulum in the x-direction**.
+   - Formula: `N = m(ẍ − lθ̇²sinθ + lθ̈cosθ)`
+4. `P` – The **net force acting on the pendulum in the y-direction**.
+   - Formula: `P = m(lθ̇²cosθ + lθ̈sinθ + g)`
+
+All of these are passed through integrators to compute `x` and `θ` over time.
+
+## Kalman Filter Enhancement
+
+To improve the accuracy and filter out noise, a **Kalman Filter** is incorporated:
+
+- Two white noise blocks simulate sensor noise.
+- Adders introduce this noise into the system.
+- The Kalman block estimates the true state variables (`x̂`), refining the output.
+
+## Visualization
+
+A **Scope** block at the end shows the simulation output. The graph shows how `x` and `θ` evolve over a 10-second simulation window, along with the impact of noise and filtering.
+
+## ⚖️ Physical Parameters Used:
+
+| Symbol | Description                           | Value        |
+|--------|---------------------------------------|--------------|
+| `M`    | Mass of the cart                      | 0.5 kg       |
+| `m`    | Mass of the pendulum                  | 0.2 kg       |
+| `b`    | Friction coefficient of the cart      | 0.1 N/m/sec  |
+| `l`    | Distance to pendulum's center of mass | 0.3 m        |
+| `I`    | Inertia of the pendulum               | 0.006 kg·m²  |
+
+## Attached Files
+
+- `structure.jpeg`: Simulink model overview.
+- `simulation.jpeg`: Scope output.
+- 'inverted_pendulum.slx':Matlab file 
 
 ---
-
-## Project Overview
-
-This project aims to demonstrate real-time control of an **inverted pendulum**, a classical problem in dynamics and control systems. The system detects the tilt of the pendulum and adjusts the wheel motors to keep it upright—just like how we instinctively balance a broom on our hand.
-
----
-
-## Concept: Inverted Pendulum
-
-An inverted pendulum is inherently unstable. When the rod tilts, gravity causes it to fall further unless actively corrected. The robot continuously senses the angle and applies corrective motion using PID (Proportional-Integral-Derivative) control to stabilize the system.  
-
-In our setup, the cart moves forward or backward based on the direction of tilt, so that the base stays under the center of mass.
-
----
-
-## Components Used
-
-| Component             | Description                                    |
-|----------------------|------------------------------------------------|
-| **ESP8266 NodeMCU**   | Microcontroller with Wi-Fi support            |
-| **MPU6050**           | IMU sensor (Accelerometer + Gyroscope)        |
-| **BO Motors (4x)**    | 1:120 gear ratio DC motors                    |
-| **Motor Driver**      | L298N Dual H-Bridge driver                    |
-| **12V Power Supply**  | Power source for motors                       |
-| **Rod**               | Acts as the inverted pendulum                 |
-
----
-
-## How It Works
-
-1. **Sensor Reading**: MPU6050 provides raw angle data (accelerometer + gyro).
-2. **Angle Estimation**: A Kalman filter fuses accelerometer and gyroscope data to get accurate angle readings.
-3. **PID Control**: A PID controller calculates the required motor speed based on the current angle error.
-4. **Motor Output**: The motor driver receives PWM signals to move the cart accordingly.
-5. **Real-Time Tuning**: A Wi-Fi-based web interface is used to tune PID constants on the fly.
-
----
-
 
